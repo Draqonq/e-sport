@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/ca483c1ba4.js" crossorigin="anonymous"></script>
+    <title>Document</title>
+    <style>
+        *{
+            box-sizing: border-box;
+            font-weight: bold;
+        }
+        body{
+            margin: 0;
+            padding: 0;
+            background-color: rgb(117, 77, 77);
+            color: rgb(46, 20, 20);
+        }
+        header{
+            width: 100%;
+            min-height: 15vh;
+            background-color: rgb(185, 185, 185);
+            border-bottom: 4px dashed rgb(46, 20, 20);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            text-shadow: 1px 1px 1px rgb(49, 49, 49);
+        }
+
+        nav{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1{
+            margin: 10px;
+            font-size: 60px;
+        }
+
+        h3{
+            width: 75vw;
+            margin: 20px;
+            padding: 15px;
+            border: 2px solid rgb(185, 185, 185);
+            border-radius: 8px;
+            font-size: 25px;
+            text-align: center;
+            background-color: rgb(145, 106, 106);
+            box-shadow: 0 0 10px white,
+            0 0 10px inset white;
+        }
+
+        .fa-solid{
+            font-size: 50px;
+            margin: 20px;
+            color: white;
+            text-shadow: 0 0 10px rgb(95, 95, 95);
+        }
+
+        section{
+            display: flex;
+            justify-content: center;
+        }
+
+        section button{
+            width: 35vw;
+            margin: 10px;
+            padding: 5px 15px;
+            background-color: rgb(145, 106, 106);
+            border: 2px solid black;
+            border-radius: 8px;
+            box-shadow: 2px 2px 2px black;
+            font-size: 20px;
+        }
+        section button:hover{
+            transform: translate(2px, 2px);
+            box-shadow: 0 0 0;
+        }
+        .ladder{
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        .round{
+            width: 300px;
+            padding: 5px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            background-color: white;
+        }
+        .round h2{
+            border-bottom: 2px solid black;
+            margin: 10px;
+        }
+        .fight{
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .team{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: red;
+            width: 125px;
+            height: 30px;
+            padding: 5px;
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>{{tournament_name}}</h1>
+    </header>
+    <nav>
+        <h3>{{tournament_description}}</h3>
+        <i class="fa-solid fa-circle-chevron-down"></i>
+    </nav>
+    <section>
+        <button>Player</button>
+        <button>Tournament Judge</button>
+    </section>
+    <div class="ladder">
+        {% block round %}{% endblock %}
+    </div>
+    
+</body>
+</html>
