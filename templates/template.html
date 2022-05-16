@@ -110,7 +110,7 @@
         }
         .fight button:hover{
             transform: translate(1px, 1px);
-            box-shadow: 0;
+            box-shadow: 0 0;
         }
         .team{
             display: flex;
@@ -139,6 +139,10 @@
     <form action='#' method='post'>
         <div class="ladder">
             {% block round %}{% endblock %}
+            <div class="round">
+                <h2>WINNER</h2>
+                {% block winner %}{% endblock %}
+            </div>
         </div>
     </form>
     

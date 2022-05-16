@@ -6,17 +6,33 @@
             <h2>{{rounds[r].name}}</h2>
             {% for fight in range(rounds[r].teams|length) %}
                 <div class="fight">
-                {% if rounds[r].teams|length > 1 %}
-                    <button name="team" type="submit" value="{{rounds[r].teams[fight][0]}}"><div class="team">{{rounds[r].teams[fight][0]}}</div></button>
-                    VS
-                    <button name="team" type="submit" value="{{rounds[r].teams[fight][1]}}"><div class="team">{{rounds[r].teams[fight][1]}}</div></button>
+                {% if r == current_round and winner|length == 0 %}
+                    {% if rounds[r].teams[fight]|length > 1 %}
+                        <button name="team" type="submit" value="{{rounds[r].teams[fight][0]}}"><div class="team">{{rounds[r].teams[fight][0]}}</div></button>
+                        VS
+                        <button name="team" type="submit" value="{{rounds[r].teams[fight][1]}}"><div class="team">{{rounds[r].teams[fight][1]}}</div></button>
+                    {% else %}
+                        <button name="team" type="submit" value="{{rounds[r].teams[fight][0]}}"><div class="team">{{rounds[r].teams[fight][0]}}</div></button>
+                        VS
+                        <div class="team"></div>
+                    {% endif%}
                 {% else %}
-                    <button name="team" type="submit" value="{{rounds[r].teams[fight][0]}}"><div class="team">{{rounds[r].teams[fight][0]}}</div></button>
-                    VS
-                    <div class="team"></div>
+                    {% if rounds[r].teams[fight]|length > 1 %}
+                        <div class="team">{{rounds[r].teams[fight][0]}}</div>
+                        VS
+                        <div class="team">{{rounds[r].teams[fight][1]}}</div>
+                    {% else %}
+                        <div class="team">{{rounds[r].teams[fight][0]}}</div>
+                        VS
+                        <div class="team"></div>
+                    {% endif%}
                 {% endif%}
                 </div>
             {% endfor %}
         </div>
     {% endfor %}
+{% endblock %}
+
+{% block winner %}
+    {{winner}}
 {% endblock %}

@@ -10,6 +10,8 @@ mongo = PyMongo(app)
 
 teams = mongo.db.teams
 
+cur_d = 0
+
 class Tournament:
     def __init__(self, name, teams):
         self.name = name
@@ -54,14 +56,22 @@ def add_winner(rounds, current_round, winner):
     return check_round(rounds, current_round)
 
 def check_round(rounds, current_round):
+    global number_of_rounds
+    global button_winner_team
     round_winners = len(rounds[current_round].winners)
     #print(round_winners)
-    round_players = len(rounds[current_round].teams)
-    #print(round_players)
-    if(round_players != 0 and round_winners >= round_players):
+    round_fight = len(rounds[current_round].teams)
+    #print(round_fight)
+    if(round_fight != 0 and current_round+1 < number_of_rounds and round_winners >= round_fight):
         current_round += 1
         fill_next_round(rounds, current_round)
+        button_winner_team = []
         #print("Następna runda")
+    elif(round_fight != 0 and current_round+1 >= number_of_rounds):
+        #wingame
+        global winner
+        winner = rounds[current_round].winners[0]
+        button_winner_team = []
     return current_round
 
 def fill_next_round(rounds, current_round):
@@ -76,6 +86,7 @@ registered_teams = ["Alakonda", "Mojowojo", "TeamXD", "Bałkan", "WODOGRZOM"]
 tournament = Tournament(tournament_name, registered_teams)
 #First round
 current_round = 0
+winner = ""
 round = Round("Round "+str(current_round), tournament.teams)
 rounds = [round]
 #Other rounds (Empty)
@@ -87,7 +98,7 @@ rounds[current_round].teams = random_fight(rounds[current_round])
 
 #print(rounds[current_round].teams)
 
-# current_round = add_winner(rounds, current_round, "Mojowojo")
+#current_round = add_winner(rounds, current_round, "Mojowojo")
 # current_round = add_winner(rounds, current_round, "TeamXD")
 # current_round = add_winner(rounds, current_round, "Bałkan")
 
@@ -109,16 +120,17 @@ rounds[current_round].teams = random_fight(rounds[current_round])
 
 @app.route('/')
 def index():
-    saved_todos = teams.find()
+    #saved_todos = teams.find()
     #teams.insert_one({'teams' : 'xddd'})
-    return render_template('index.html', tournament_name=tournament_name, tournament_description=tournament_description, rounds=rounds)
+    return render_template('index.html', tournament_name=tournament_name, tournament_description=tournament_description, rounds=rounds, current_round=current_round, winner=winner)
 
-testlist = []
-
+button_winner_team = []
 def addlist(item):
-    if not item in testlist:
-        testlist.append(item)
-
+    if not item in button_winner_team:
+        global current_round
+        button_winner_team.append(item)
+        current_round = add_winner(rounds, current_round, item)
+        #print(current_round)
 
 @app.route('/', methods=['POST'])
 def index2():
@@ -126,5 +138,5 @@ def index2():
     #teams.insert_one({'teams' : 'xddd'})
     print(request.form.get('team'))
     addlist(request.form.get('team'))
-    print(testlist)
-    return render_template('index.html', tournament_name=tournament_name, tournament_description=tournament_description, rounds=rounds)
+    print(button_winner_team)
+    return render_template('index.html', tournament_name=tournament_name, tournament_description=tournament_description, rounds=rounds, current_round=current_round, winner=winner)
