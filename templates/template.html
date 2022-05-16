@@ -103,6 +103,15 @@
             align-items: center;
             gap: 10px;
         }
+        .fight button{
+            padding: 0;
+            border: 0;
+            box-shadow: 2px 2px 1px black;
+        }
+        .fight button:hover{
+            transform: translate(1px, 1px);
+            box-shadow: 0;
+        }
         .team{
             display: flex;
             justify-content: center;
@@ -124,12 +133,14 @@
         <i class="fa-solid fa-circle-chevron-down"></i>
     </nav>
     <section>
-        <button>Player</button>
-        <button>Tournament Judge</button>
+            <button name="subject" type="submit" value="player">Player</button>
+            <button name="subject" type="submit" value="judge">Tournament Judge</button>
     </section>
-    <div class="ladder">
-        {% block round %}{% endblock %}
-    </div>
+    <form action='#' method='post'>
+        <div class="ladder">
+            {% block round %}{% endblock %}
+        </div>
+    </form>
     
 </body>
 </html>

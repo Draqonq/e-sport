@@ -1,17 +1,17 @@
 {% extends "template.html" %}
 
 {% block round %}
-    {% for r in range(round|length) %}
+    {% for r in range(rounds|length) %}
         <div class="round">
-            <h2>{{round[r].name}}</h2>
-            {% for fight in range(round[r].teams|length) %}
+            <h2>{{rounds[r].name}}</h2>
+            {% for fight in range(rounds[r].teams|length) %}
                 <div class="fight">
-                {% if round[r].teams|length > 1 %}
-                    <div class="team">{{RegTeam[fight][0]}}</div>
+                {% if rounds[r].teams|length > 1 %}
+                    <button name="team" type="submit" value="{{rounds[r].teams[fight][0]}}"><div class="team">{{rounds[r].teams[fight][0]}}</div></button>
                     VS
-                    <div class="team">{{RegTeam[fight][1]}}</div>
+                    <button name="team" type="submit" value="{{rounds[r].teams[fight][1]}}"><div class="team">{{rounds[r].teams[fight][1]}}</div></button>
                 {% else %}
-                <div class="team">{{RegTeam[fight][0]}}</div>
+                    <button name="team" type="submit" value="{{rounds[r].teams[fight][0]}}"><div class="team">{{rounds[r].teams[fight][0]}}</div></button>
                     VS
                     <div class="team"></div>
                 {% endif%}
