@@ -1,5 +1,13 @@
 {% extends "template.html" %}
 
+{% block playerlist %} 
+    <div class="list">
+        {% for team in registered_teams %}
+            <div class="team">{{team}}</div>
+        {% endfor %}
+    </div>
+{% endblock %}
+
 {% block round %}
     {% for r in range(rounds|length) %}
         <div class="round">
@@ -34,5 +42,10 @@
 {% endblock %}
 
 {% block winner %}
-    {{winner}}
+    {% if rounds|length > 0 %}
+        <div class="round">
+            <h2>WINNER</h2>
+            {{winner}}
+        </div>
+    {% endif %}
 {% endblock %}

@@ -80,6 +80,17 @@
             transform: translate(2px, 2px);
             box-shadow: 0 0 0;
         }
+        .players{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+        }
+        .players .list{
+            display: flex;
+            justify-content: center;
+        }
         .ladder{
             display: flex;
             justify-content: center;
@@ -137,12 +148,20 @@
             <button name="subject" type="submit" value="judge">Tournament Judge</button>
     </section>
     <form action='#' method='post'>
+        <div class="manage">
+            <input type="text" name="player">
+            <button type="submit" name='manageTeams' value="addPlayer">Add Player</button>
+            <button type="submit" name='manageTeams' value="blockAddPlayer">Start Game</button>
+        </div>
+    </form>
+    <div class="players">
+        <h2>Players</h2>
+        {% block playerlist %}{% endblock %}
+    </div>
+    <form action='#' method='post'>
         <div class="ladder">
             {% block round %}{% endblock %}
-            <div class="round">
-                <h2>WINNER</h2>
-                {% block winner %}{% endblock %}
-            </div>
+            {% block winner %}{% endblock %}
         </div>
     </form>
     
