@@ -153,13 +153,18 @@ def addlist(item):
         current_round = add_winner(item)
         print("następna runda:"+str(current_round))
 
+def add_to_registered_teams(item):
+    global registered_teams
+    if not item in registered_teams and len(item) > 0 and len(item) < 11:
+        registered_teams.append(item)
+
 @app.route('/', methods=['POST'])
 def index2():
     if request.form.get('team'):
         addlist(request.form.get('team'))
     elif request.form.get('manageTeams'):
         if request.form.get('player') and request.form.get('manageTeams') == "addPlayer":
-            registered_teams.append(request.form.get('player'))
+            add_to_registered_teams(request.form.get('player'))
         elif request.form.get('manageTeams') == "blockAddPlayer":
             start_game()
 

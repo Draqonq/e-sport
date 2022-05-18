@@ -1,5 +1,13 @@
 {% extends "template.html" %}
 
+{% block members %}
+    <select>
+        {% for team in registered_teams %}
+            <option value="{{team}}">{{team}}</option>
+        {% endfor %}
+    </select>
+{% endblock %}
+
 {% block playerlist %} 
     <div class="list">
         {% for team in registered_teams %}

@@ -21,7 +21,7 @@
             width: 100%;
             min-height: 15vh;
             background-color: rgb(185, 185, 185);
-            border-bottom: 4px dashed rgb(46, 20, 20);
+            border-bottom: 2px solid rgb(46, 20, 20);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -80,6 +80,28 @@
             transform: translate(2px, 2px);
             box-shadow: 0 0 0;
         }
+        .manage, .members{
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            padding: 20px;
+        }
+        .manage input, .members input{
+            background-color: rgb(185, 185, 185);
+            height: 30px;
+        }
+        .manage button, .members button{
+            background-color: rgb(145, 106, 106);
+            transform: translate(-1px, -1px);
+            box-shadow: 1px 1px 1px black;
+        }
+        .manage button:hover, .members button:hover{
+            transform: translate(0);
+            box-shadow: 0 0;
+        }
+        .members select{
+            background-color: rgb(185, 185, 185);
+        }
         .players{
             display: flex;
             flex-direction: column;
@@ -90,20 +112,26 @@
         .players .list{
             display: flex;
             justify-content: center;
+            flex-wrap: wrap;
+            gap: 5px;
         }
         .ladder{
             display: flex;
             justify-content: center;
+            flex-wrap: wrap;
+            padding: 20px;
             gap: 20px;
         }
         .round{
-            width: 300px;
+            width: 330px;
             padding: 5px;
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 10px;
-            background-color: white;
+            background-color: rgb(145, 106, 106);
+            border: 2px solid black;
+            box-shadow: 2px 2px 2px rgb(50, 50, 50);
         }
         .round h2{
             border-bottom: 2px solid black;
@@ -118,6 +146,7 @@
             padding: 0;
             border: 0;
             box-shadow: 2px 2px 1px black;
+            border-radius: 5px;
         }
         .fight button:hover{
             transform: translate(1px, 1px);
@@ -127,11 +156,12 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: red;
-            width: 125px;
+            background-color: rgb(185, 185, 185);
+            width: 135px;
             height: 30px;
             padding: 5px;
-            border: 1px solid black;
+            border: 2px solid black;
+            border-radius: 5px;
         }
     </style>
 </head>
@@ -154,8 +184,15 @@
             <button type="submit" name='manageTeams' value="blockAddPlayer">Start Game</button>
         </div>
     </form>
+    <form action='#' method='post'>
+        <div class="members">
+            <input type="text" name="member">
+            {% block members %}{% endblock %}
+            <button type="submit" name="member" value="addMember">Add Member</button>
+        </div>
+    </form>
     <div class="players">
-        <h2>Players</h2>
+        <h2>Teams</h2>
         {% block playerlist %}{% endblock %}
     </div>
     <form action='#' method='post'>
