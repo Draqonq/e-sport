@@ -65,8 +65,7 @@
             display: flex;
             justify-content: center;
         }
-
-        section button{
+        form p{
             width: 35vw;
             margin: 10px;
             padding: 5px 15px;
@@ -75,10 +74,7 @@
             border-radius: 8px;
             box-shadow: 2px 2px 2px black;
             font-size: 20px;
-        }
-        section button:hover{
-            transform: translate(2px, 2px);
-            box-shadow: 0 0 0;
+            text-align: center;
         }
         .manage, .members{
             display: flex;
@@ -173,14 +169,11 @@
         <h3>{{tournament_description}}</h3>
         <i class="fa-solid fa-circle-chevron-down"></i>
     </nav>
-    <section>
-            <button name="subject" type="submit" value="player">Player</button>
-            <button name="subject" type="submit" value="judge">Tournament Judge</button>
-    </section>
     <form action='#' method='post'>
+        <p>Add team</p>
         <div class="manage">
             <input type="text" name="player">
-            <button type="submit" name='manageTeams' value="addPlayer">Add Player</button>
+            <button type="submit" name='manageTeams' value="addPlayer">Add Team</button>
             <button type="submit" name='manageTeams' value="blockAddPlayer">Start Game</button>
         </div>
     </form>

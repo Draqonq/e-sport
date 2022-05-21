@@ -7,13 +7,17 @@ app = Flask(__name__)
 
 app.config['MONGO_URI'] = 'mongodb+srv://Piorob:Robpio@cluster0.cftar.mongodb.net/serwisy?retryWrites=true&w=majority'
 mongo = PyMongo(app)
-
 teams = mongo.db.teams
 
 class Tournament:
+    def __init__(self, name):
+        self.name = name
     def __init__(self, name, teams):
         self.name = name
         self.teams = teams
+
+    def add_team(self, team):
+        self.teams.append(team)
 
 class Round:
     def __init__(self, name, teams):
@@ -27,6 +31,14 @@ class Round:
 class Fight:
     def __init__(self, teams):
         self.teams = teams
+
+class Team:
+    def __init__(self, name):
+        self.name = name
+        self.members = []
+
+    def add_member(self, member):
+        self.members.append(member)
 
 def random_fight(round):
     teams = round.teams[:]
@@ -157,6 +169,10 @@ def add_to_registered_teams(item):
     global registered_teams
     if not item in registered_teams and len(item) > 0 and len(item) < 11:
         registered_teams.append(item)
+        #tournament.add_team(item)
+        #print(tournament.teams)
+
+
 
 @app.route('/', methods=['POST'])
 def index2():
@@ -167,5 +183,9 @@ def index2():
             add_to_registered_teams(request.form.get('player'))
         elif request.form.get('manageTeams') == "blockAddPlayer":
             start_game()
+    elif request.form.get('member'):
+        print(request.form.get('memberName'))
+        print(request.form.get('memberTeam'))
+        #Add team member
 
     return render_template('index.html', tournament_name=tournament_name, tournament_description=tournament_description, registered_teams=registered_teams, rounds=rounds, current_round=current_round, winner=winner)

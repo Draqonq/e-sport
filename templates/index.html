@@ -1,7 +1,7 @@
 {% extends "template.html" %}
 
 {% block members %}
-    <select>
+    <select name="memberTeam">
         {% for team in registered_teams %}
             <option value="{{team}}">{{team}}</option>
         {% endfor %}
