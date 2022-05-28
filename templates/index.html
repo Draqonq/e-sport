@@ -3,7 +3,7 @@
 {% block members %}
     <select name="memberTeam">
         {% for team in registered_teams %}
-            <option value="{{team}}">{{team}}</option>
+            <option value="{{team.name}}">{{team.name}}</option>
         {% endfor %}
     </select>
 {% endblock %}
@@ -11,7 +11,7 @@
 {% block playerlist %} 
     <div class="list">
         {% for team in registered_teams %}
-            <div class="team">{{team}}</div>
+            <div class="team">{{team.name}}</div>
         {% endfor %}
     </div>
 {% endblock %}
@@ -20,25 +20,25 @@
     {% for r in range(rounds|length) %}
         <div class="round">
             <h2>{{rounds[r].name}}</h2>
-            {% for fight in range(rounds[r].teams|length) %}
+            {% for fight in range(rounds[r].fights|length) %}
                 <div class="fight">
                 {% if r == current_round and winner|length == 0 %}
-                    {% if rounds[r].teams[fight]|length > 1 %}
-                        <button name="team" type="submit" value="{{rounds[r].teams[fight][0]}}"><div class="team">{{rounds[r].teams[fight][0]}}</div></button>
+                    {% if rounds[r].fights[fight]|length > 1 %}
+                        <button name="team" type="submit" value="{{rounds[r].fights[fight][0]}},{{fight}}"><div class="team">{{rounds[r].fights[fight][0]}}</div></button>
                         VS
-                        <button name="team" type="submit" value="{{rounds[r].teams[fight][1]}}"><div class="team">{{rounds[r].teams[fight][1]}}</div></button>
+                        <button name="team" type="submit" value="{{rounds[r].fights[fight][1]}},{{fight}}"><div class="team">{{rounds[r].fights[fight][1]}}</div></button>
                     {% else %}
-                        <button name="team" type="submit" value="{{rounds[r].teams[fight][0]}}"><div class="team">{{rounds[r].teams[fight][0]}}</div></button>
+                        <button name="team" type="submit" value="{{rounds[r].fights[fight][0]}},{{fight}}"><div class="team">{{rounds[r].fights[fight][0]}}</div></button>
                         VS
                         <div class="team"></div>
                     {% endif%}
                 {% else %}
-                    {% if rounds[r].teams[fight]|length > 1 %}
-                        <div class="team">{{rounds[r].teams[fight][0]}}</div>
+                    {% if rounds[r].fights[fight]|length > 1 %}
+                        <div class="team">{{rounds[r].fights[fight][0]}}</div>
                         VS
-                        <div class="team">{{rounds[r].teams[fight][1]}}</div>
+                        <div class="team">{{rounds[r].fights[fight][1]}}</div>
                     {% else %}
-                        <div class="team">{{rounds[r].teams[fight][0]}}</div>
+                        <div class="team">{{rounds[r].fights[fight][0]}}</div>
                         VS
                         <div class="team"></div>
                     {% endif%}

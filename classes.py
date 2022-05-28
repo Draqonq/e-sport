@@ -1,23 +1,11 @@
-class Tournament:
-    def __init__(self, *args):
-        if len(args) == 1:
-            self.name = args[0]
-        elif len(args) == 2:
-            self.name = args[0]
-            self.teams = args[1]
-        elif len(args) == 3:
-            self.name = args[0]
-            self.teams2 = args[1]
+from operator import truediv
 
-    # def __init__(self, name):
-    #     self.name = name
-    # def __init__(self, name, teams):
-    #     self.name = name
-    #     self.teams = teams
-        
-    # def __init__(self, name, teams2, test2):
-    #     self.name = name
-    #     self.teams2 = teams2
+
+class Tournament:
+    def __init__(self, name, teams):
+        self.name = name
+        self.teams = teams
+        self.winner = None
 
     def add_team(self, team):
         self.teams.append(team)
@@ -25,17 +13,16 @@ class Tournament:
     def add_winner(self, winner):
         self.winner = winner
 
-    
-
-    def add_team2(self, team2):
-        self.teams2.append(team2)
-
 class Round:
     def __init__(self, name, teams):
         self.name = name
         self.teams = teams
         self.winners = []
+        self.fights = []
     
+    def add_fight(self, fight):
+        self.fights.append(fight)
+        
     def add_winner(self, winner):
         self.winners.append(winner)
 
@@ -50,3 +37,15 @@ class Team:
 
     def add_member(self, member):
         self.members.append(member)
+
+    def __repr__(self):
+        return self.name
+
+    def __str__(self):
+        return self.name
+
+    def __eq__(self, other):
+        if isinstance(other, str):
+            return self.name == other
+        else:
+            return self.name == other.name
