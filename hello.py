@@ -6,19 +6,20 @@ import math
 
 app = Flask(__name__)
 
-app.config['MONGO_URI'] = 'mongodb+srv://Piorob:Robpio@cluster0.cftar.mongodb.net/serwisy?retryWrites=true&w=majority'
+app.config['MONGO_URI'] = 'mongodb+srv://Piorob:Robpio@cluster0.cftar.mongodb.net/esport?retryWrites=true&w=majority'
 mongo = PyMongo(app)
-teams = mongo.db.teams
+mongo_members = mongo.db.members
+mongo_teams = mongo.db.teams
 
-#Tournament and registered teams
+# Tournament and registered teams
 tournament_name = "Chess Master"
 tournament_description = "W turnieju mogą wziąć udział studenci informatyki stosowanej oraz teleinformatyki. Liczymy na zwycięztwo informatyków!"
 
-#registered_teams = ["Alakonda", "Mojowojo", "TeamXD", "Bałkan", "WODOGRZOM"]
+# registered_teams = ["Alakonda", "Mojowojo", "TeamXD", "Bałkan", "WODOGRZOM"]
 registered_teams = []
 tournament = Tournament(tournament_name, registered_teams)
 
-#Rounds and winner
+# Rounds and winner
 current_round = 0
 rounds = []
 number_of_rounds = 0
@@ -28,35 +29,46 @@ winner = ""
 button_winner_team = []
 button_winner_fight = []
 
-#Pre start
+
+# Pre start
 def add_to_registered_teams(team):
     global registered_teams
     if not team in registered_teams and len(team) > 0 and len(team) < 11:
         team_item = Team(team)
         registered_teams.append(team_item)
+        db_team = {"team_name": team_item.name, "team_members": []}
+        mongo_teams.insert_one(db_team)
+
 
 def add_member_to_registered_teams(member, team):
     global registered_teams
     for teams in registered_teams:
         if teams == team:
             teams.add_member(member)
+            # member_team = mongo.db.mongo_teams.find({"team_name": team})
+            db_member = {"member_name": member, "team_name": team}
+            mongo_members.insert_one(db_member)
 
-#Start game
+
+
+
+# Start game
 def start_game():
     global rounds
     global number_of_rounds
-    round = Round("Round "+str(current_round), tournament.teams)
+    round = Round("Round " + str(current_round), tournament.teams)
     rounds.append(round)
 
     # for x in rounds[0].teams:
     #     print(x)
-        
-    #Other rounds (Empty)
+
+    # Other rounds (Empty)
     number_of_rounds = count_number_of_rounds()
     for i in range(current_round + 1, number_of_rounds):
-        rounds.append(Round("Round "+str(i),[]))
-    #First fights (Random fights)
+        rounds.append(Round("Round " + str(i), []))
+    # First fights (Random fights)
     rounds[current_round].fights = random_fight()
+
 
 def count_number_of_rounds():
     global registered_teams
@@ -64,19 +76,20 @@ def count_number_of_rounds():
     number_of_rounds = 0
     while number_of_player > 1:
         number_of_rounds += 1
-        number_of_player = math.ceil(number_of_player/2)
+        number_of_player = math.ceil(number_of_player / 2)
     return number_of_rounds
 
-#Fights => {fight{team, team}, fight{team, team}}
+
+# Fights => {fight{team, team}, fight{team, team}}
 def random_fight():
     global rounds
     global current_round
     if current_round == 0:
         teams = tournament.teams[:]
     else:
-        teams = rounds[current_round-1].winners[:]
+        teams = rounds[current_round - 1].winners[:]
     fights = []
-    for i in range(math.ceil(len(teams)/2)):
+    for i in range(math.ceil(len(teams) / 2)):
         fight = []
         teamName = random.choice(teams)
         fight.append(teamName)
@@ -90,7 +103,8 @@ def random_fight():
         fights.append(fight)
     return fights
 
-#Round winner
+
+# Round winner
 def add_winner_to_list(item):
     global button_winner_team
     global button_winner_fight
@@ -104,6 +118,7 @@ def add_winner_to_list(item):
         add_round_winner(winner)
         check_round()
 
+
 def add_round_winner(winner):
     global current_round
     global rounds
@@ -111,8 +126,9 @@ def add_round_winner(winner):
     # for x in rounds[current_round].teams:
     #     print(x)
 
-    item = next((i for i in rounds[current_round].teams if i == winner), None)
+    item = next((i for i in rounds[current_round].mongo_teams if i == winner), None)
     rounds[current_round].add_winner(item)
+
 
 def fill_next_round():
     global current_round
@@ -124,23 +140,24 @@ def fill_next_round():
     rounds[current_round].teams = rounds[current_round-1].winners
     rounds[current_round].fights = random_fight()
 
+
 def check_round():
     global number_of_rounds
     global current_round
     global rounds
-    #Number of winners
+    # Number of winners
     round_winners = len(rounds[current_round].winners)
-    #Number of fights
+    # Number of fights
     round_fights = len(rounds[current_round].fights)
 
     # round_fight = len(rounds[current_round].teams)
     # print(round_fight)
 
-    if(round_fights != 0 and current_round + 1 < number_of_rounds and round_winners >= round_fights):
+    if (round_fights != 0 and current_round + 1 < number_of_rounds and round_winners >= round_fights):
         current_round += 1
         fill_next_round()
         print("Następna runda")
-    elif(round_fights != 0 and current_round + 1 >= number_of_rounds):
+    elif (round_fights != 0 and current_round + 1 >= number_of_rounds):
         global winner
         winner = str(rounds[current_round].winners[0])
 
@@ -155,11 +172,14 @@ def check_round():
     #     winner = rounds[current_round].winners[0]
     #     button_winner_team = []
 
+
 @app.route('/')
 def index():
-    #saved_todos = teams.find()
-    #teams.insert_one({'teams' : 'xddd'})
-    return render_template('index.html', tournament_name=tournament_name, tournament_description=tournament_description, registered_teams=registered_teams, rounds=rounds, current_round=current_round, winner=winner)
+    # saved_todos = teams.find()
+    # teams.insert_one({'teams' : 'xddd'})
+    return render_template('index.html', tournament_name=tournament_name, tournament_description=tournament_description,
+                           registered_teams=registered_teams, rounds=rounds, current_round=current_round, winner=winner)
+
 
 @app.route('/', methods=['POST'])
 def index2():
@@ -171,24 +191,22 @@ def index2():
         elif request.form.get('manageTeams') == "blockAddPlayer":
             start_game()
     elif request.form.get('member'):
-        #print(request.form.get('memberName'))
-        #print(request.form.get('memberTeam'))
+        # print(request.form.get('memberName'))
+        # print(request.form.get('memberTeam'))
         add_member_to_registered_teams(request.form.get('memberName'), request.form.get('memberTeam'))
-        #Add team member
+        # Add team member
     elif request.form.get('reset'):
         print("reset")
 
-    return render_template('index.html', tournament_name=tournament_name, tournament_description=tournament_description, registered_teams=registered_teams, rounds=rounds, current_round=current_round, winner=winner)
+    return render_template('index.html', tournament_name=tournament_name, tournament_description=tournament_description,
+                           registered_teams=registered_teams, rounds=rounds, current_round=current_round, winner=winner)
 
-#Registered teams
-
-
-
+# Registered teams
 
 
-#print(rounds[current_round].teams)
+# print(rounds[current_round].teams)
 
-#current_round = add_winner(rounds, current_round, "Mojowojo")
+# current_round = add_winner(rounds, current_round, "Mojowojo")
 # current_round = add_winner(rounds, current_round, "TeamXD")
 # current_round = add_winner(rounds, current_round, "Bałkan")
 
