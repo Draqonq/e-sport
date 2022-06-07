@@ -10,7 +10,7 @@ app.config['MONGO_URI'] = 'mongodb+srv://Piorob:Robpio@cluster0.cftar.mongodb.ne
 mongo = PyMongo(app)
 mongo_members = mongo.db.members
 mongo_teams = mongo.db.teams
-
+mongo_winners = mongo.db.tournament_winners
 # Tournament and registered teams
 tournament_name = "Chess Master"
 tournament_description = "W turnieju mogą wziąć udział studenci informatyki stosowanej oraz teleinformatyki. Liczymy na zwycięztwo informatyków!"
@@ -45,11 +45,8 @@ def add_member_to_registered_teams(member, team):
     for teams in registered_teams:
         if teams == team:
             teams.add_member(member)
-            # member_team = mongo.db.mongo_teams.find({"team_name": team})
             db_member = {"member_name": member, "team_name": team}
             mongo_members.insert_one(db_member)
-
-
 
 
 # Start game
@@ -126,7 +123,7 @@ def add_round_winner(winner):
     # for x in rounds[current_round].teams:
     #     print(x)
 
-    item = next((i for i in rounds[current_round].mongo_teams if i == winner), None)
+    item = next((i for i in rounds[current_round].teams if i == winner), None)
     rounds[current_round].add_winner(item)
 
 
@@ -137,7 +134,7 @@ def fill_next_round():
 
     button_winner_team = []
     button_winner_fight = []
-    rounds[current_round].teams = rounds[current_round-1].winners
+    rounds[current_round].teams = rounds[current_round - 1].winners
     rounds[current_round].fights = random_fight()
 
 
@@ -160,6 +157,10 @@ def check_round():
     elif (round_fights != 0 and current_round + 1 >= number_of_rounds):
         global winner
         winner = str(rounds[current_round].winners[0])
+        # db_winning_team = {"team_name": winner, "team_members": [winner.]}
+        db_winning_members = list(mongo_members.find({"team_name": winner}))
+        db_winning_team = {"team_name": winner, "team_members": db_winning_members}
+        mongo_winners.insert_one(db_winning_team)
 
     # if(round_fight != 0 and current_round + 1 < number_of_rounds and round_winners >= round_fight):
     #     current_round += 1
@@ -179,6 +180,12 @@ def index():
     # teams.insert_one({'teams' : 'xddd'})
     return render_template('index.html', tournament_name=tournament_name, tournament_description=tournament_description,
                            registered_teams=registered_teams, rounds=rounds, current_round=current_round, winner=winner)
+
+
+@app.route('/winners')
+def tournament_winners():
+    all_past_winners = list(mongo_winners.find({}))
+    return render_template('winners.html', winners=all_past_winners)
 
 
 @app.route('/', methods=['POST'])

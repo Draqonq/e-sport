@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Past tournaments winners</title>
+</head>
+<body>
+    <h1>Past tournaments winners</h1>
+        <ul class="winners">
+          {% for winner in winners %}
+          <li>
+            <h2>{{ winner.team_name }} </h2>
+            <!--  New ul with class of 'courses' -->
+            <ul class='members'>
+              {% for member in winner.team_members %}
+              <li>{{ member.member_name}}</li>
+              {% endfor %}
+            </ul>
+          </li>
+          {% endfor %}
+        </ul>
+</body>
+</html>
