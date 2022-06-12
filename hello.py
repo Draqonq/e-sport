@@ -134,6 +134,7 @@ def fill_next_round():
 
     button_winner_team = []
     button_winner_fight = []
+    
     rounds[current_round].teams = rounds[current_round - 1].winners
     rounds[current_round].fights = random_fight()
 

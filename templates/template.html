@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://kit.fontawesome.com/ca483c1ba4.js" crossorigin="anonymous"></script>
     <title>Document</title>
     <style>
         *{
@@ -12,91 +11,77 @@
             font-weight: bold;
         }
         body{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             margin: 0;
             padding: 0;
-            background-color: rgb(117, 77, 77);
-            color: rgb(46, 20, 20);
+            background-color: #242423;
+            color: white;
         }
         header{
             width: 100%;
             min-height: 15vh;
-            background-color: rgb(185, 185, 185);
-            border-bottom: 2px solid rgb(46, 20, 20);
+            background-color: #333533;
+            border-bottom: 2px solid #f5cb5c;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             text-align: center;
-            text-shadow: 1px 1px 1px rgb(49, 49, 49);
+            text-shadow: 1px 1px 2px #cfdbd5;
         }
-
+        header h1{
+            margin: 10px;
+            font-size: 60px;
+        }
         nav{
             display: flex;
             flex-direction: column;
             align-items: center;
         }
-
-        h1{
-            margin: 10px;
-            font-size: 60px;
-        }
-
-        h3{
+        nav h3{
             width: 75vw;
             margin: 20px;
             padding: 15px;
-            border: 2px solid rgb(185, 185, 185);
-            border-radius: 8px;
             font-size: 25px;
             text-align: center;
-            background-color: rgb(145, 106, 106);
-            box-shadow: 0 0 10px white,
-            0 0 10px inset white;
         }
-
-        .fa-solid{
-            font-size: 50px;
-            margin: 20px;
-            color: white;
-            text-shadow: 0 0 10px rgb(95, 95, 95);
-        }
-
-        section{
+        .add-team-form, .add-members-form{
+            width: 60%;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            border-bottom: 1px solid #cfdbd5;
+            gap: 10px;
+            padding: 10px;
         }
-        form p{
-            width: 35vw;
+        .add-team-form p, .add-members-form p{
             margin: 10px;
             padding: 5px 15px;
-            background-color: rgb(145, 106, 106);
-            border: 2px solid black;
-            border-radius: 8px;
-            box-shadow: 2px 2px 2px black;
             font-size: 20px;
             text-align: center;
         }
-        .manage, .members{
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            padding: 20px;
+        input, input:focus, select, select:focus{
+            border: 1px solid #f5cb5c;
+            outline: none;
         }
-        .manage input, .members input{
-            background-color: rgb(185, 185, 185);
-            height: 30px;
+        input, select{
+            padding: 8px 2px;
+            background-color: #333533;
+            color: white;
+            border: 1px solid #333533;
         }
-        .manage button, .members button{
-            background-color: rgb(145, 106, 106);
-            transform: translate(-1px, -1px);
-            box-shadow: 1px 1px 1px black;
+        button{
+            padding: 5px 10px;
+            background-color: #333533;
+            color: white;
+            cursor: pointer;
+            box-shadow: 2px 2px 1px black;
         }
-        .manage button:hover, .members button:hover{
-            transform: translate(0);
-            box-shadow: 0 0;
-        }
-        .members select{
-            background-color: rgb(185, 185, 185);
+        button:hover{
+            transform: translate(2px, 2px);
+            box-shadow: none;
         }
         .players{
             display: flex;
@@ -110,6 +95,18 @@
             justify-content: center;
             flex-wrap: wrap;
             gap: 5px;
+        }
+        .team{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #cfdbd5;
+            color: black;
+            width: 135px;
+            height: 30px;
+            padding: 5px;
+            border: 2px solid black;
+            border-radius: 3px;
         }
         .ladder{
             display: flex;
@@ -125,7 +122,7 @@
             flex-direction: column;
             align-items: center;
             gap: 10px;
-            background-color: rgb(145, 106, 106);
+            background-color: #333533;
             border: 2px solid black;
             box-shadow: 2px 2px 2px rgb(50, 50, 50);
         }
@@ -148,16 +145,11 @@
             transform: translate(1px, 1px);
             box-shadow: 0 0;
         }
-        .team{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: rgb(185, 185, 185);
-            width: 135px;
-            height: 30px;
-            padding: 5px;
-            border: 2px solid black;
-            border-radius: 5px;
+
+        .reset-form button{
+            height: 50px;
+            width: 200px;
+            font-size: 20px;
         }
     </style>
 </head>
@@ -167,35 +159,33 @@
     </header>
     <nav>
         <h3>{{tournament_description}}</h3>
-        <i class="fa-solid fa-circle-chevron-down"></i>
     </nav>
-    <form action='#' method='post'>
-        <p>Add team</p>
-        <div class="manage">
-            <input type="text" name="player">
-            <button type="submit" name='manageTeams' value="addPlayer">Add Team</button>
-            <button type="submit" name='manageTeams' value="blockAddPlayer">Start Game</button>
-        </div>
+    <form action='' method='post' class='add-team-form'>
+        <p>Dodaj drużynę</p>
+        <input type="text" name="player" placeholder='Nazwa'>
+        <button type="submit" name='manageTeams' value="addPlayer">Add Team</button>
     </form>
-    <form action='#' method='post'>
-        <div class="members">
-            <input type="text" name="memberName">
-            {% block members %}{% endblock %}
-            <button type="submit" name="member" value="addMember">Add Member</button>
-        </div>
-    </form>
-    <form action="#" method="post">
-        <button type="submit" name="reset" value="reset">Reset</button>
+    <form action='' method='post' class='add-members-form'>
+        <p>Przydziel graczy do drużyn</p>
+        <input type="text" name="memberName" placeholder='Gracz'>
+        {% block members %}{% endblock %}
+        <button type="submit" name="member" value="addMember">Dodaj członka</button>
     </form>
     <div class="players">
-        <h2>Teams</h2>
+        <h2>Drużyny</h2>
         {% block playerlist %}{% endblock %}
     </div>
-    <form action='#' method='post'>
+    <form action='' method='post' class='teams-form'>
+        {% block startgame %}{% endblock %}
+    </form>
+    <form action='' method='post'>
         <div class="ladder">
             {% block round %}{% endblock %}
             {% block winner %}{% endblock %}
         </div>
+    </form>
+    <form action='' method="post" class='reset-form'>
+        <button type="submit" name="reset" value="reset">Reset</button>
     </form>
     
 </body>
