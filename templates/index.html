@@ -11,7 +11,12 @@
 {% block playerlist %} 
     <div class="list">
         {% for team in registered_teams %}
-            <div class="team">{{team.name}}</div>
+            <div class="team">
+                <p>{{team.name}}</p>
+                {% for member in team.members %}
+                    <p>{{member}}</p>
+                {% endfor %}
+            </div>
         {% endfor %}
     </div>
 {% endblock %}
