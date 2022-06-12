@@ -4,8 +4,34 @@
     <meta charset="UTF-8">
     <title>Past tournaments winners</title>
 </head>
+<style>
+  *{
+    box-sizing: border-box;
+    font-weight: bold;
+  }
+  body{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 0;
+      padding: 0;
+      background-color: #242423;
+      color: white;
+  }
+  h1{
+    padding: 10px;
+    border-bottom: 2px solid #f5cb5c;
+  }
+  body > ul{
+    list-style: '👑 ';
+  }
+  li ul{
+    display: flex;
+    gap: 50px;
+  }
+</style>
 <body>
-    <h1>Past tournaments winners</h1>
+    <h1>Zwycięzcy poprzednich turniejów</h1>
         <ul class="winners">
           {% for winner in winners %}
           <li>

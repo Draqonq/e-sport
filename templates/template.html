@@ -161,6 +161,27 @@
             width: 200px;
             font-size: 20px;
         }
+        a{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 50px;
+            width: 200px;
+            font-size: 20px;
+            padding: 5px 10px;
+            margin: 10px 0;
+            background-color: #333533;
+            color: white;
+            cursor: pointer;
+            box-shadow: 2px 2px 1px black;
+            border: 2px solid black;
+            text-decoration: none;
+        }
+        a:hover{
+            transform: translate(1px, 1px);
+            box-shadow: none;
+        }
     </style>
 </head>
 <body>
@@ -197,6 +218,7 @@
     <form action='' method="post" class='reset-form'>
         <button type="submit" name="reset" value="reset">Reset</button>
     </form>
+    <a href='/winners'>Zwycięzcy</a>
     
 </body>
 </html>
