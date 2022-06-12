@@ -3,7 +3,11 @@
 {% block members %}
     <select name="memberTeam">
         {% for team in registered_teams %}
-            <option value="{{team.name}}">{{team.name}}</option>
+            {% if team.name == selected_team %}
+                <option value="{{team.name}}" selected>{{team.name}}</option>
+            {% else %}
+                <option value="{{team.name}}">{{team.name}}</option>
+            {% endif %}
         {% endfor %}
     </select>
 {% endblock %}
@@ -36,7 +40,7 @@
                         <button name="team" type="submit" value="{{rounds[r].fights[fight][0]}},{{fight}}"><div class="team">{{rounds[r].fights[fight][0]}}</div></button>
                         VS
                         <div class="team"></div>
-                    {% endif%}
+                    {% endif %}
                 {% else %}
                     {% if rounds[r].fights[fight]|length > 1 %}
                         <div class="team">{{rounds[r].fights[fight][0]}}</div>
@@ -46,8 +50,8 @@
                         <div class="team">{{rounds[r].fights[fight][0]}}</div>
                         VS
                         <div class="team"></div>
-                    {% endif%}
-                {% endif%}
+                    {% endif %}
+                {% endif %}
                 </div>
             {% endfor %}
         </div>

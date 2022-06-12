@@ -28,6 +28,7 @@ winner = ""
 
 button_winner_team = []
 button_winner_fight = []
+selected_team = ""
 
 def reset_all():
     global registered_teams
@@ -38,6 +39,7 @@ def reset_all():
     global button_winner_team
     global button_winner_fight
     global tournament
+    global selected_team
     registered_teams = []
     current_round = 0
     rounds = []
@@ -46,6 +48,7 @@ def reset_all():
     button_winner_team = []
     button_winner_fight = []
     tournament = Tournament(tournament_name, registered_teams)
+    selected_team = ""
 
 # Pre start
 def add_to_registered_teams(team):
@@ -59,9 +62,11 @@ def add_to_registered_teams(team):
 
 def add_member_to_registered_teams(member, team):
     global registered_teams
+    global selected_team
     for teams in registered_teams:
         if teams == team:
             teams.add_member(member)
+            selected_team = team
             db_member = {"member_name": member, "team_name": team}
             mongo_members.insert_one(db_member)
 
@@ -193,7 +198,7 @@ def index():
     # saved_todos = teams.find()
     # teams.insert_one({'teams' : 'xddd'})
     return render_template('index.html', tournament_name=tournament_name, tournament_description=tournament_description,
-                           registered_teams=registered_teams, rounds=rounds, current_round=current_round, winner=winner)
+                           registered_teams=registered_teams, rounds=rounds, current_round=current_round, winner=winner, selected_team=selected_team)
 
 
 @app.route('/winners')
@@ -220,7 +225,7 @@ def index2():
         reset_all()
 
     return render_template('index.html', tournament_name=tournament_name, tournament_description=tournament_description,
-                           registered_teams=registered_teams, rounds=rounds, current_round=current_round, winner=winner)
+                           registered_teams=registered_teams, rounds=rounds, current_round=current_round, winner=winner, selected_team=selected_team)
 
 # Registered teams
 
