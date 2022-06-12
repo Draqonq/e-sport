@@ -29,6 +29,23 @@ winner = ""
 button_winner_team = []
 button_winner_fight = []
 
+def reset_all():
+    global registered_teams
+    global current_round
+    global rounds
+    global number_of_rounds
+    global winner
+    global button_winner_team
+    global button_winner_fight
+    global tournament
+    registered_teams = []
+    current_round = 0
+    rounds = []
+    number_of_rounds = 0
+    winner = ""
+    button_winner_team = []
+    button_winner_fight = []
+    tournament = Tournament(tournament_name, registered_teams)
 
 # Pre start
 def add_to_registered_teams(team):
@@ -119,10 +136,6 @@ def add_winner_to_list(item):
 def add_round_winner(winner):
     global current_round
     global rounds
-
-    # for x in rounds[current_round].teams:
-    #     print(x)
-
     item = next((i for i in rounds[current_round].teams if i == winner), None)
     rounds[current_round].add_winner(item)
 
@@ -154,7 +167,6 @@ def check_round():
     if (round_fights != 0 and current_round + 1 < number_of_rounds and round_winners >= round_fights):
         current_round += 1
         fill_next_round()
-        print("Następna runda")
     elif (round_fights != 0 and current_round + 1 >= number_of_rounds):
         global winner
         winner = str(rounds[current_round].winners[0])
@@ -173,6 +185,7 @@ def check_round():
     #     global winner
     #     winner = rounds[current_round].winners[0]
     #     button_winner_team = []
+
 
 
 @app.route('/')
@@ -194,7 +207,7 @@ def index2():
     if request.form.get('team'):
         add_winner_to_list(request.form.get('team'))
     elif request.form.get('manageTeams'):
-        if request.form.get('player') and request.form.get('manageTeams') == "addPlayer":
+        if request.form.get('player') and request.form.get('manageTeams') == "addPlayer" and len(rounds) == 0:
             add_to_registered_teams(request.form.get('player'))
         elif request.form.get('manageTeams') == "blockAddPlayer":
             start_game()
@@ -204,7 +217,7 @@ def index2():
         add_member_to_registered_teams(request.form.get('memberName'), request.form.get('memberTeam'))
         # Add team member
     elif request.form.get('reset'):
-        print("reset")
+        reset_all()
 
     return render_template('index.html', tournament_name=tournament_name, tournament_description=tournament_description,
                            registered_teams=registered_teams, rounds=rounds, current_round=current_round, winner=winner)

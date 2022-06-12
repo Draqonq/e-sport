@@ -59,7 +59,7 @@
 {% endblock %}
 
 {% block startgame %}
-    {% if registered_teams|length > 0 %}
+    {% if registered_teams|length > 0 and rounds|length == 0 %}
         <button type="submit" name='manageTeams' value="blockAddPlayer">Start Game</button>
     {% endif %}
 {% endblock %}
