@@ -12,10 +12,9 @@ mongo_members = mongo.db.members
 mongo_teams = mongo.db.teams
 mongo_winners = mongo.db.tournament_winners
 # Tournament and registered teams
-tournament_name = "Chess Master"
-tournament_description = "W turnieju mogą wziąć udział studenci informatyki stosowanej oraz teleinformatyki. Liczymy na zwycięztwo informatyków!"
+tournament_name = "PBŚ Valorant Champions"
+tournament_description = "Turniej zorganizowany przez Wydział Telekomunikacji, Informatyki i Elektrotechniki. Wziąć w nim udział  mogą studenci Politechniki Bydgoskiej. Rozgrywane będą mecze w taktycznego FPS'a stworzonego przez Riot Games, grę Valorant"
 
-# registered_teams = ["Alakonda", "Mojowojo", "TeamXD", "Bałkan", "WODOGRZOM"]
 registered_teams = []
 tournament = Tournament(tournament_name, registered_teams)
 
@@ -77,9 +76,6 @@ def start_game():
     global number_of_rounds
     round = Round("Round " + str(current_round), tournament.teams)
     rounds.append(round)
-
-    # for x in rounds[0].teams:
-    #     print(x)
 
     # Other rounds (Empty)
     number_of_rounds = count_number_of_rounds()
@@ -166,9 +162,6 @@ def check_round():
     # Number of fights
     round_fights = len(rounds[current_round].fights)
 
-    # round_fight = len(rounds[current_round].teams)
-    # print(round_fight)
-
     if (round_fights != 0 and current_round + 1 < number_of_rounds and round_winners >= round_fights):
         current_round += 1
         fill_next_round()
@@ -180,23 +173,9 @@ def check_round():
         db_winning_team = {"team_name": winner, "team_members": db_winning_members}
         mongo_winners.insert_one(db_winning_team)
 
-    # if(round_fight != 0 and current_round + 1 < number_of_rounds and round_winners >= round_fight):
-    #     current_round += 1
-    #     fill_next_round()
-    #     button_winner_team = []
-    #     #print("Następna runda")
-    # elif(round_fight != 0 and current_round + 1 >= number_of_rounds):
-    #     #wingame
-    #     global winner
-    #     winner = rounds[current_round].winners[0]
-    #     button_winner_team = []
-
-
 
 @app.route('/')
 def index():
-    # saved_todos = teams.find()
-    # teams.insert_one({'teams' : 'xddd'})
     return render_template('index.html', tournament_name=tournament_name, tournament_description=tournament_description,
                            registered_teams=registered_teams, rounds=rounds, current_round=current_round, winner=winner, selected_team=selected_team)
 
@@ -226,27 +205,3 @@ def index2():
 
     return render_template('index.html', tournament_name=tournament_name, tournament_description=tournament_description,
                            registered_teams=registered_teams, rounds=rounds, current_round=current_round, winner=winner, selected_team=selected_team)
-
-# Registered teams
-
-
-# print(rounds[current_round].teams)
-
-# current_round = add_winner(rounds, current_round, "Mojowojo")
-# current_round = add_winner(rounds, current_round, "TeamXD")
-# current_round = add_winner(rounds, current_round, "Bałkan")
-
-# print(rounds[current_round].teams)
-
-
-# round0_winners = ["Mojowojo", "Bałkan", "WODOGRZOM"]
-# round[0].winners = round0_winners
-
-# round_winners = len(round[0].winners)
-# print(round_winners)
-# round_players = len(round[0].teams)
-# print(round_players)
-# while(round_players != 0 and round_winners >= round_players):
-#     print("Następna runda")
-#     round_winners = len(round[1].winners)
-#     round_players = len(round[1].teams)
