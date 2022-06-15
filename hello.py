@@ -120,25 +120,30 @@ def random_fight():
 
 
 # Round winner
-def add_winner_to_list(item):
+def add_winner_to_list(item, result1, result2):
     global button_winner_team
     global button_winner_fight
     global rounds
     item = item.split(",")
     winner = item[0]
     fight = item[1]
+
     if not winner in button_winner_team and not fight in button_winner_fight:
+        result = str(result1) + " : " + str(result2)
+        print(fight, result)
         button_winner_team.append(winner)
+        print(button_winner_team)
         button_winner_fight.append(fight)
-        add_round_winner(winner)
+        add_round_winner(winner, result)
         check_round()
 
 
-def add_round_winner(winner):
+def add_round_winner(winner, result):
     global current_round
     global rounds
     item = next((i for i in rounds[current_round].teams if i == winner), None)
     rounds[current_round].add_winner(item)
+    rounds[current_round].add_result(result)
 
 
 def fill_next_round():
@@ -177,7 +182,7 @@ def check_round():
 @app.route('/')
 def index():
     return render_template('index.html', tournament_name=tournament_name, tournament_description=tournament_description,
-                           registered_teams=registered_teams, rounds=rounds, current_round=current_round, winner=winner, selected_team=selected_team)
+                           registered_teams=registered_teams, rounds=rounds, current_round=current_round, winner=winner, selected_team=selected_team, button_winner_team=button_winner_team)
 
 
 @app.route('/winners')
@@ -189,7 +194,8 @@ def tournament_winners():
 @app.route('/', methods=['POST'])
 def index2():
     if request.form.get('team'):
-        add_winner_to_list(request.form.get('team'))
+        fight = request.form.get('team').split(",")[1]
+        add_winner_to_list(request.form.get('team'), request.form.get('fightResult1,' + str(fight)), request.form.get('fightResult2,' + str(fight)))
     elif request.form.get('manageTeams'):
         if request.form.get('player') and request.form.get('manageTeams') == "addPlayer" and len(rounds) == 0:
             add_to_registered_teams(request.form.get('player'))
@@ -204,4 +210,4 @@ def index2():
         reset_all()
 
     return render_template('index.html', tournament_name=tournament_name, tournament_description=tournament_description,
-                           registered_teams=registered_teams, rounds=rounds, current_round=current_round, winner=winner, selected_team=selected_team)
+                           registered_teams=registered_teams, rounds=rounds, current_round=current_round, winner=winner, selected_team=selected_team, button_winner_team=button_winner_team)

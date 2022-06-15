@@ -33,14 +33,27 @@
                 <div class="fight">
                 {% if r == current_round and winner|length == 0 %}
                     {% if rounds[r].fights[fight]|length > 1 %}
-                        <button name="team" type="submit" value="{{rounds[r].fights[fight][0]}},{{fight}}"><div class="team">{{rounds[r].fights[fight][0]}}</div></button>
-                        VS
-                        <button name="team" type="submit" value="{{rounds[r].fights[fight][1]}},{{fight}}"><div class="team">{{rounds[r].fights[fight][1]}}</div></button>
+                        {% for f in range(0,2) %}
+                            {% if rounds[r].fights[fight][f] in button_winner_team %}
+                                <button name="team" type="submit" value="{{rounds[r].fights[fight][f]}},{{fight}}"><div class="team show-winner-team">{{rounds[r].fights[fight][f]}}</div></button>
+                            {% else %}
+                                <button name="team" type="submit" value="{{rounds[r].fights[fight][f]}},{{fight}}"><div class="team">{{rounds[r].fights[fight][f]}}</div></button>
+                            {% endif %}
+                            {% if f == 0 %}
+                                VS
+                            {% endif %}
+                        {% endfor %}
                     {% else %}
-                        <button name="team" type="submit" value="{{rounds[r].fights[fight][0]}},{{fight}}"><div class="team">{{rounds[r].fights[fight][0]}}</div></button>
+                        {% if rounds[r].fights[fight][0] in button_winner_team %}
+                            <button name="team" type="submit" value="{{rounds[r].fights[fight][0]}},{{fight}}"><div class="team show-winner-team">{{rounds[r].fights[fight][0]}}</div></button>
+                        {% else %}
+                            <button name="team" type="submit" value="{{rounds[r].fights[fight][0]}},{{fight}}"><div class="team">{{rounds[r].fights[fight][0]}}</div></button>
+                        {% endif %}
                         VS
                         <div class="team"></div>
                     {% endif %}
+                    <input type='number' name="fightResult1,{{fight}}" value='0' min='0' max='20' class='fight-result' required>
+                    <input type='number' name="fightResult2,{{fight}}" value='0' min='0' max='20' class='fight-result' required>
                 {% else %}
                     {% if rounds[r].fights[fight]|length > 1 %}
                         <div class="team">{{rounds[r].fights[fight][0]}}</div>
@@ -51,6 +64,7 @@
                         VS
                         <div class="team"></div>
                     {% endif %}
+                    <div class="show-fight-result">{{rounds[r].result[fight]}}</div>
                 {% endif %}
                 </div>
             {% endfor %}

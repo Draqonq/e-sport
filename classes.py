@@ -19,12 +19,16 @@ class Round:
         self.teams = teams
         self.winners = []
         self.fights = []
+        self.result = []
     
     def add_fight(self, fight):
         self.fights.append(fight)
         
     def add_winner(self, winner):
         self.winners.append(winner)
+
+    def add_result(self, result):
+        self.result.append(result)
 
 class Fight:
     def __init__(self, teams):
